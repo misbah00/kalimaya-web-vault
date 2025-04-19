@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,6 +62,20 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
+				},
+				kalimaya: {
+					DEFAULT: '#38B2AC',
+					50: '#E6F7F6',
+					100: '#C4ECE9',
+					200: '#9FDDD9',
+					300: '#79CFC9',
+					400: '#54C0B8',
+					500: '#38B2AC',
+					600: '#2D8F89',
+					700: '#236C67',
+					800: '#184A45',
+					900: '#0E2725',
+					950: '#071514',
 				}
 			},
 			borderRadius: {
@@ -84,11 +99,21 @@ export default {
 					to: {
 						height: '0'
 					}
+				},
+				fadeIn: {
+					from: { opacity: '0' },
+					to: { opacity: '1' }
+				},
+				slideUp: {
+					from: { transform: 'translateY(10px)', opacity: '0' },
+					to: { transform: 'translateY(0)', opacity: '1' }
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+				'fade-in': 'fadeIn 0.3s ease-out',
+				'slide-up': 'slideUp 0.4s ease-out'
 			}
 		}
 	},
