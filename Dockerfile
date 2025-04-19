@@ -17,6 +17,9 @@ RUN npm run build
 # Stage 2: Serve the application
 FROM nginx:alpine
 
+# Create storage directory
+RUN mkdir -p /app/storage && chmod 777 /app/storage
+
 # Copy the build output
 COPY --from=build /app/dist /usr/share/nginx/html
 

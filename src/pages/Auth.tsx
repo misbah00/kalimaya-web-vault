@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 
 export default function Auth() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("muhammadmisbah21@gmail.com");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [isResetMode, setIsResetMode] = useState(false);
@@ -19,16 +19,10 @@ export default function Auth() {
     setLoading(true);
     
     try {
-      // Check if credentials match the fixed values
-      if (username !== "kalimaya" || password !== "noname12123") {
-        throw new Error("Invalid username or password");
-      }
-
-      // If username and password match our hardcoded values, we'll sign in with Supabase
-      // using the email address associated with the account
+      // Direct Supabase authentication without credential check
       const { error } = await supabase.auth.signInWithPassword({
         email: "muhammadmisbah21@gmail.com", 
-        password: "noname12123" // Use the known password for the Supabase account
+        password: password
       });
 
       if (error) throw error;
@@ -80,15 +74,6 @@ export default function Auth() {
         <h2 className="text-2xl font-bold text-center">Kalimaya Storage</h2>
         {!isResetMode ? (
           <form onSubmit={handleLogin} className="space-y-4">
-            <div className="space-y-2">
-              <Input
-                type="text"
-                placeholder="Username"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-              />
-            </div>
             <div className="space-y-2">
               <Input
                 type="password"
