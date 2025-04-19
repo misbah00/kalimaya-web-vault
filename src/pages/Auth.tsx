@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 
 export default function Auth() {
-  const [email, setEmail] = useState("muhammadmisbah21@gmail.com");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [isResetMode, setIsResetMode] = useState(false);
@@ -20,13 +20,15 @@ export default function Auth() {
     
     try {
       // Check if credentials match the fixed values
-      if (email !== "kalimaya" || password !== "noname12123") {
+      if (username !== "kalimaya" || password !== "noname12123") {
         throw new Error("Invalid username or password");
       }
 
+      // If username and password match our hardcoded values, we'll sign in with Supabase
+      // using the email address associated with the account
       const { error } = await supabase.auth.signInWithPassword({
-        email: "muhammadmisbah21@gmail.com", // Use the actual email for Supabase
-        password
+        email: "muhammadmisbah21@gmail.com", 
+        password: "noname12123" // Use the known password for the Supabase account
       });
 
       if (error) throw error;
@@ -82,8 +84,8 @@ export default function Auth() {
               <Input
                 type="text"
                 placeholder="Username"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
                 required
               />
             </div>
