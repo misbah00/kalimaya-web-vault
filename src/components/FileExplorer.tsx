@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { 
   File, 
@@ -19,6 +18,7 @@ import { FileType } from "@/types/file";
 import MediaPlayer from "./MediaPlayer";
 import DocumentViewer from "./DocumentViewer";
 import FileUploader from "./FileUploader";
+import { FileContextMenu } from "./FileContextMenu";
 
 export default function FileExplorer() {
   const { 
