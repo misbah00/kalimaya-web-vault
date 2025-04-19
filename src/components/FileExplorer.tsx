@@ -23,7 +23,7 @@ import FileUploader from "./FileUploader";
 export default function FileExplorer() {
   const { 
     currentFiles, 
-    currentFolder, 
+    currentFolder,
     navigateToFolder, 
     folderHistory, 
     navigateBack, 
@@ -116,31 +116,33 @@ export default function FileExplorer() {
 
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
           {currentFiles.map((file) => (
-            <Tooltip key={file.id}>
-              <TooltipTrigger asChild>
-                <div 
-                  className={cn(
-                    "file-card animate-slide-up cursor-pointer",
-                    file.type === "folder" && "bg-secondary/50"
-                  )}
-                  onClick={() => handleFileOpen(file)}
-                >
-                  {getFileIcon(file)}
-                  <span className="text-sm font-medium truncate w-full text-center">
-                    {file.name}
-                  </span>
-                  <span className="text-xs text-muted-foreground mt-1">
-                    {file.type !== "folder" && (file.size || "Unknown size")}
-                  </span>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent>
-                <p>{file.name}</p>
-                <p className="text-xs text-muted-foreground">
-                  {file.type === "folder" ? "Folder" : `${file.type.toUpperCase()} File`}
-                </p>
-              </TooltipContent>
-            </Tooltip>
+            <FileContextMenu key={file.id} file={file}>
+              <Tooltip key={file.id}>
+                <TooltipTrigger asChild>
+                  <div 
+                    className={cn(
+                      "file-card animate-slide-up cursor-pointer",
+                      file.type === "folder" && "bg-secondary/50"
+                    )}
+                    onClick={() => handleFileOpen(file)}
+                  >
+                    {getFileIcon(file)}
+                    <span className="text-sm font-medium truncate w-full text-center">
+                      {file.name}
+                    </span>
+                    <span className="text-xs text-muted-foreground mt-1">
+                      {file.type !== "folder" && (file.size || "Unknown size")}
+                    </span>
+                  </div>
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>{file.name}</p>
+                  <p className="text-xs text-muted-foreground">
+                    {file.type === "folder" ? "Folder" : `${file.type.toUpperCase()} File`}
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </FileContextMenu>
           ))}
           
           {currentFiles.length === 0 && (
