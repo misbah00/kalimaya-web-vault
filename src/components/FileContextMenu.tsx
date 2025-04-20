@@ -33,13 +33,33 @@ export function FileContextMenu({ file, children }: FileContextMenuProps) {
   };
 
   const handleRename = () => {
-    // Use the more reliable updateFileName function instead of deleting and re-adding
+    if (newName.trim() === '') {
+      toast({
+        title: "Error",
+        description: "File name cannot be empty",
+        variant: "destructive",
+      });
+      return;
+    }
+    
     updateFileName(file.id, newName);
-    setIsRenameDialogOpen(false);
     toast({
       title: "File renamed",
       description: `${file.name} has been renamed to ${newName}`,
     });
+    
+    // Close dialog after successful rename
+    setIsRenameDialogOpen(false);
+  };
+
+  const handleRenameClick = () => {
+    // Reset the name to the current file name when opening the dialog
+    setNewName(file.name);
+    setIsRenameDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setIsRenameDialogOpen(false);
   };
 
   const handleNewFolder = () => {
@@ -55,6 +75,14 @@ export function FileContextMenu({ file, children }: FileContextMenuProps) {
     });
   };
 
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleRename();
+    } else if (e.key === 'Escape') {
+      handleCloseDialog();
+    }
+  };
+
   return (
     <>
       <ContextMenu>
@@ -65,7 +93,7 @@ export function FileContextMenu({ file, children }: FileContextMenuProps) {
               New Folder
             </ContextMenuItem>
           )}
-          <ContextMenuItem onClick={() => setIsRenameDialogOpen(true)}>
+          <ContextMenuItem onClick={handleRenameClick}>
             Rename
           </ContextMenuItem>
           <ContextMenuSeparator />
@@ -75,7 +103,7 @@ export function FileContextMenu({ file, children }: FileContextMenuProps) {
         </ContextMenuContent>
       </ContextMenu>
 
-      <Dialog open={isRenameDialogOpen} onOpenChange={setIsRenameDialogOpen}>
+      <Dialog open={isRenameDialogOpen} onOpenChange={handleCloseDialog}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Rename {file.type}</DialogTitle>
@@ -84,11 +112,12 @@ export function FileContextMenu({ file, children }: FileContextMenuProps) {
             <Input
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
+              onKeyDown={handleKeyDown}
               placeholder="New name"
               autoFocus
             />
             <div className="flex justify-end space-x-2">
-              <Button variant="outline" onClick={() => setIsRenameDialogOpen(false)}>
+              <Button variant="outline" onClick={handleCloseDialog}>
                 Cancel
               </Button>
               <Button onClick={handleRename}>Rename</Button>
