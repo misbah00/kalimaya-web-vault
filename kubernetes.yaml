@@ -1,8 +1,29 @@
 
 apiVersion: v1
+kind: Namespace
+metadata:
+  name: file-manager
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: kalimaya-storage-pv
+  namespace: file-manager
+spec:
+  capacity:
+    storage: 70Gi
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: standard
+  hostPath:
+    path: /data/kalimaya-storage
+---
+apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
   name: kalimaya-storage-pvc
+  namespace: file-manager
 spec:
   accessModes:
     - ReadWriteOnce
@@ -15,6 +36,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: kalimaya-storage
+  namespace: file-manager
   labels:
     app: kalimaya-storage
 spec:
@@ -64,6 +86,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: kalimaya-storage-service
+  namespace: file-manager
 spec:
   selector:
     app: kalimaya-storage
@@ -76,6 +99,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: kalimaya-storage-ingress
+  namespace: file-manager
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
