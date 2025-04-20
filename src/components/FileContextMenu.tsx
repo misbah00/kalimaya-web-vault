@@ -20,7 +20,7 @@ interface FileContextMenuProps {
 }
 
 export function FileContextMenu({ file, children }: FileContextMenuProps) {
-  const { deleteFile, addFile } = useFileSystem();
+  const { deleteFile, addFile, updateFileName } = useFileSystem();
   const [isRenameDialogOpen, setIsRenameDialogOpen] = useState(false);
   const [newName, setNewName] = useState(file.name);
 
@@ -33,12 +33,8 @@ export function FileContextMenu({ file, children }: FileContextMenuProps) {
   };
 
   const handleRename = () => {
-    deleteFile(file.id);
-    addFile({
-      ...file,
-      id: Date.now().toString(),
-      name: newName,
-    });
+    // Use the more reliable updateFileName function instead of deleting and re-adding
+    updateFileName(file.id, newName);
     setIsRenameDialogOpen(false);
     toast({
       title: "File renamed",
@@ -89,6 +85,7 @@ export function FileContextMenu({ file, children }: FileContextMenuProps) {
               value={newName}
               onChange={(e) => setNewName(e.target.value)}
               placeholder="New name"
+              autoFocus
             />
             <div className="flex justify-end space-x-2">
               <Button variant="outline" onClick={() => setIsRenameDialogOpen(false)}>

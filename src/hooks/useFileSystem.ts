@@ -13,6 +13,7 @@ interface FileSystemState {
   navigateForward: () => void;
   addFile: (file: FileType) => void;
   deleteFile: (fileId: string) => void;
+  updateFileName: (fileId: string, newName: string) => void;
 }
 
 // Demo data
@@ -128,5 +129,28 @@ export const useFileSystem = create<FileSystemState>((set, get) => ({
       },
       currentFiles: updatedFiles,
     });
+  },
+
+  updateFileName: (fileId: string, newName: string) => {
+    const { fileStructure, currentFolder } = get();
+    
+    // Find the file to update
+    const fileToUpdate = fileStructure[currentFolder].find(file => file.id === fileId);
+    
+    if (fileToUpdate) {
+      // Create updated file list with the renamed file
+      const updatedFiles = fileStructure[currentFolder].map(file => 
+        file.id === fileId ? { ...file, name: newName } : file
+      );
+      
+      // Update the file structure
+      set({
+        fileStructure: {
+          ...fileStructure,
+          [currentFolder]: updatedFiles,
+        },
+        currentFiles: updatedFiles,
+      });
+    }
   },
 }));
